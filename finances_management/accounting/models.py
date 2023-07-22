@@ -3,8 +3,8 @@ from django.core.validators import MinValueValidator
 from django.db.models import Sum, F, Prefetch
 
 
-class User(models.Model):
-    telegram_id = models.PositiveIntegerField(
+class Customer(models.Model):
+    telegram_id = models.PositiveBigIntegerField(
         verbose_name='Telegram ID',
         unique=True,
         db_index=True,
@@ -16,17 +16,19 @@ class User(models.Model):
 
 class Wallet(models.Model):
     user = models.ForeignKey(
-        'accounting.User',
+        'accounting.Customer',
         verbose_name='User ID',
         related_name='wallets',
         on_delete=models.CASCADE,
     )
     name = models.CharField(
         verbose_name='Wallet name',
+        default='total',
         max_length=60,
     )
     balance = models.DecimalField(
         verbose_name='Current balance',
+        default=0,
         max_digits=9,
         decimal_places=2,
     )
